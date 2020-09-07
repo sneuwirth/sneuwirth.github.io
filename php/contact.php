@@ -1,8 +1,8 @@
 <?php
 
 if ($_POST) {
-    $to_Email = "mail@mail.com"; //Replace with recipient email address
-    $subject = 'Contact from your website'; //Subject line for emails
+    $to_Email = "sarah.neuwirth@gmx.net"; //Replace with recipient email address
+    $subject = 'Contact from your Personal Website'; //Subject line for emails
     //check if its an ajax request, exit if not
     if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
 

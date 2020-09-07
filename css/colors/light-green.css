@@ -46,24 +46,35 @@ background: #81b3ab;
 .bar-main-container {
     background: #81b3ab;
 }
-.team-section #ourprocess .action-button:hover, #ourprocess .action-button:focus {
-    border: 1px solid #81b3ab;
-    color: #81b3ab;
-}
-.team-section #progressbar li.active:before,  #progressbar li.active:after{
+.publication-section .date {
     background: #81b3ab;
 }
-.service-section .serv-wrap .serv-icons {
-  color: #81b3ab;
+.publication-section .media h4 {
+    color: #81b3ab;
 }
-.pricing-section .pricing-table-header h3 {
-  background: #81b3ab;
+.publication-detail .ext_link {
+    background: #81b3ab;
+}
+.publication-detail .ext_link:hover {
+    color: #81b3ab;
 }
 .team-card-container h3 {
     color: #81b3ab;
 }
 .team-card-container .back .social-icons a {
     background: #81b3ab;
+}
+.research-section .slide-header h4 {
+    color: #81b3ab;
+}
+.research-section .slider-details {
+    background: #81b3ab;
+}
+.teaching-section .teaching > li > .teaching-tag {
+    background: #81b3ab;
+}
+.teaching-section .teaching h4 {
+    color: #81b3ab;
 }
 .work_desc .ext_link {
     background: #81b3ab;
@@ -100,5 +111,3 @@ background: #81b3ab;
 #my-link {
     background: #81b3ab;
 }
-
-

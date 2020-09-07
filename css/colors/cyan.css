@@ -1,4 +1,4 @@
- .hs-content .active-sec {
+.hs-content .active-sec {
     background: #0DADB7 !important;
 }
 .hs-inner h2:after {
@@ -46,24 +46,35 @@ background: #0DADB7;
 .bar-main-container {
     background: #0DADB7;
 }
-.team-section #ourprocess .action-button:hover, #ourprocess .action-button:focus {
-    border: 1px solid #0DADB7;
-    color: #0DADB7;
-}
-.team-section #progressbar li.active:before,  #progressbar li.active:after{
+.publication-section .date {
     background: #0DADB7;
 }
-.service-section .serv-wrap .serv-icons {
-  color: #0DADB7;
+.publication-section .media h4 {
+    color: #0DADB7;
 }
-.pricing-section .pricing-table-header h3 {
-  background: #0DADB7;
+.publication-detail .ext_link {
+    background: #0DADB7;
+}
+.publication-detail .ext_link:hover {
+    color: #0DADB7;
 }
 .team-card-container h3 {
     color: #0DADB7;
 }
 .team-card-container .back .social-icons a {
     background: #0DADB7;
+}
+.research-section .slide-header h4 {
+    color: #0DADB7;
+}
+.research-section .slider-details {
+    background: #0DADB7;
+}
+.teaching-section .teaching > li > .teaching-tag {
+    background: #0DADB7;
+}
+.teaching-section .teaching h4 {
+    color: #0DADB7;
 }
 .work_desc .ext_link {
     background: #0DADB7;
@@ -100,5 +111,3 @@ background: #0DADB7;
 #my-link {
     background: #0DADB7;
 }
-
-

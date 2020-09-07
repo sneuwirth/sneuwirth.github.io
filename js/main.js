@@ -6,6 +6,109 @@ jQuery(document).ready(function($) {
         };
     });
     /* ---------------------------------------------------------------------- */
+    /* ------------------ SHUFFLE JS / PUBLICATION  -------------------------- */
+    /* ---------------------------------------------------------------------- */
+    var $mygrid = $('#mygrid');
+    $mygrid.shuffle({
+        itemSelector: '.publication_item',
+        speed: 500
+    });
+    /* reshuffle when user clicks a filter item */
+    $('#filter a').on('click', function(e) {
+        e.preventDefault();
+        // get group name from clicked item
+        var groupName = $(this).attr('data-group');
+        // reshuffle grid
+        $mygrid.shuffle('shuffle', groupName);
+    });
+    $mygrid.shuffle('shuffle', 'all');
+    //sorting fonction
+    $('.desc').on('click', function() {
+        var sort = "date-publication",
+            opts = {
+                reverse: true,
+                by: function($el) {
+                    return $el.data('date-publication');
+                }
+            }
+
+        // Filter elements
+        $mygrid.shuffle('sort', opts);
+    });
+    $('.asc').on('click', function() {
+        var sort = "date-publication",
+            opts = {
+                reverse: false,
+                by: function($el) {
+                    return $el.data('date-publication');
+                }
+            }
+
+        // Filter elements
+        $mygrid.shuffle('sort', opts);
+    });
+
+    /* ---------------------------------------------------------------------- */
+    /* -------------------------- RESEARCH SLIDER --------------------------- */
+    /* ---------------------------------------------------------------------- */
+    // Variables
+    var currentSlide = 1,
+        currentDate = $('.slide-wrapper .active').data("date"),
+        slideName = $('div.slide'),
+        totalSlides = slideName.length,
+        slideCounter = $('.slide-counter'),
+        sliderDate = $('.slide-date'),
+        btnNext = $('a#btn-next'),
+        btnPrev = $('a#btn-prev'),
+        addSlide = $('a#add-slide');
+
+    slideCounter.text(currentSlide + ' / ' + totalSlides);
+    sliderDate.html('<span class="research-date-label"><i class="fa fa-calendar"></i>Research Date : </span>' + currentDate);
+    // Slide Transitions
+    function btnTransition(button, direction) {
+        $(button).on('click', function() {
+
+            if (button === btnNext && currentSlide >= totalSlides) {
+                currentSlide = 1;
+            } else if (button === btnPrev && currentSlide === 1) {
+                currentSlide = totalSlides;
+            } else {
+                direction();
+            };
+            currentDate = $(slideName).eq(currentSlide - 1).data("date");
+            slideName.filter('.active').animate({
+                opacity: 0,
+                left: -40
+            }, 400, function() {
+                $(this)
+                    .removeClass('active')
+                    .css('left', 0);
+                $(slideName)
+                    .eq(currentSlide - 1)
+                    .css({
+                        'opacity': 0,
+                        'left': 40
+                    })
+                    .addClass('active')
+                    .animate({
+                        opacity: 1,
+                        left: 0
+                    }, 400);
+            });
+
+            slideCounter.text(currentSlide + ' / ' + totalSlides);
+            sliderDate.html('<span class="research-date-label"><i class="fa fa-calendar"></i>Research Date : </span>' + currentDate);
+        });
+    };
+    // Slide forward
+    btnTransition(btnNext, function() {
+        currentSlide++;
+    });
+    // Slide Backwards
+    btnTransition(btnPrev, function() {
+        currentSlide--;
+    });
+    /* ---------------------------------------------------------------------- */
     /* --------------------------NEWS / RECENT ACTIVITY  -------------------- */
     /* ---------------------------------------------------------------------- */
     $("#marquee").marquee();
@@ -59,6 +162,7 @@ jQuery(document).ready(function($) {
     back_trigger.on('click', function() {
         $(".about-card").toggleClass("show-menu");
     });
+
     /* ---------------------------------------------------------------------- */
     /* ------------------------------- CONTACT ------------------------------ */
     /* ---------------------------------------------------------------------- */
@@ -135,6 +239,16 @@ jQuery(document).ready(function($) {
             $.panelslider.close();
             content.appendTo('.hs-menu nav');
         }
+        jQuery('.jspPane').bind('resize', function(e) {
+            var pane = $('div.hs-content-wrapper > article')
+            pane.jScrollPane({
+                verticalGutter: 0,
+                hideFocus: false,
+                contentWidth: '0px'
+            });
+            var api = pane.data('jsp');
+            api.reinitialise();
+        });
     });
     /* ---------------------------------------------------------------------- */
     /* ---------------------- NAVIGUATION ARROW KEYBOARD -------------------- */
@@ -146,6 +260,7 @@ jQuery(document).ready(function($) {
             $(".next-page").click();;
         }
     });
+
     /* ---------------------------------------------------------------------- */
     /* ---------------------- GOOGLE MAPS-------------------- */
     /* ---------------------------------------------------------------------- */
@@ -267,8 +382,9 @@ jQuery(document).ready(function($) {
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
     });
 
+
     /* ---------------------------------------------------------------------- */
-    /* --------------------- FIX SOME SAFARI BUGS  -------------------------- */
+    /* ---------------------- FIX OLD SAFARI BUGS  -------------------------- */
     /* ---------------------------------------------------------------------- */
     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
         var oldsldrwidth = $('.research-section .slider-details').width();
@@ -293,144 +409,7 @@ jQuery(document).ready(function($) {
 
             }
         });
+
     }
-    /* ---------------------------------------------------------------------- */
-    /* -------------------------- TESTIMONIALS  ----------------------------- */
-    /* ---------------------------------------------------------------------- */
-    var testimonials = {};
 
-    testimonials.slider = (function() {
-        var currentItemIndex = 0,
-            prevBtn = $('.prev-testimonial'),
-            nextBtn = $('.next-testimonial'),
-            items = (function() {
-                var items = [];
-                $('.testimonial').each(function() {
-                    items.push($(this));
-                });
-                return items;
-            })();
-
-        function getCurrent() {
-            $('.testimonial').each(function(index) {
-                $(this).removeClass('current');
-            });
-            $('.testimonial').eq(currentItemIndex).addClass('current');
-        }
-
-        function greyOut(prevBtn, nextBtn) {
-            if ($(prevBtn).hasClass('grey-out')) {
-                $(prevBtn).removeClass('grey-out');
-            }
-            if ($(nextBtn).hasClass('grey-out')) {
-                $(nextBtn).removeClass('grey-out');
-            }
-            if (currentItemIndex == 0) {
-                $(prevBtn).addClass('grey-out');
-            }
-            if (currentItemIndex == items.length - 1) {
-                $(nextBtn).addClass('grey-out');
-            }
-        }
-
-        return {
-            init: function(prevBtn, nextBtn) {
-                items[currentItemIndex].addClass('current');
-                greyOut(prevBtn, nextBtn);
-                $(prevBtn).click(function() {
-                    if (currentItemIndex > 0) {
-                        currentItemIndex--;
-                    }
-                    getCurrent();
-                    greyOut(prevBtn, nextBtn);
-                });
-                $(nextBtn).click(function() {
-                    if (currentItemIndex < items.length - 1) {
-                        currentItemIndex++;
-                    }
-                    getCurrent();
-                    greyOut(prevBtn, nextBtn);
-                });
-            }
-        };
-
-    })();
-
-    testimonials.slider.init('.prev-testimonial', '.next-testimonial');
-    /* ---------------------------------------------------------------------- */
-    /* ----------------------------- PROCESS  ------------------------------- */
-    /* ---------------------------------------------------------------------- */
-
-    var current_fs, next_fs, previous_fs;
-    var left, opacity, scale;
-    var animating;
-
-    $(".next").click(function() {
-        if (animating) return false;
-        animating = true;
-
-        current_fs = $(this).parent();
-        next_fs = $(this).parent().next();
-
-        $("#progressbar li").eq($(".proceess").index(next_fs)).addClass("active");
-
-        next_fs.show();
-
-        current_fs.animate({
-            opacity: 0
-        }, {
-            step: function(now, mx) {
-                scale = 1 - (1 - now) * 0.2;
-                left = (now * 50) + "%";
-                opacity = 1 - now;
-                current_fs.css({
-                    'transform': 'scale(' + scale + ')'
-                });
-                next_fs.css({
-                    'left': left,
-                    'opacity': opacity
-                });
-            },
-            duration: 800,
-            complete: function() {
-                current_fs.hide();
-                animating = false;
-            },
-            easing: 'easeInOutBack'
-        });
-    });
-
-    $(".previous").click(function() {
-        if (animating) return false;
-        animating = true;
-
-        current_fs = $(this).parent();
-        previous_fs = $(this).parent().prev();
-
-        $("#progressbar li").eq($(".proceess").index(current_fs)).removeClass("active");
-
-        previous_fs.show();
-        current_fs.animate({
-            opacity: 0
-        }, {
-            step: function(now, mx) {
-                scale = 0.8 + (1 - now) * 0.2;
-                left = ((1 - now) * 50) + "%";
-                opacity = 1 - now;
-                current_fs.css({
-                    'left': left
-                });
-                previous_fs.css({
-                    'transform': 'scale(' + scale + ')',
-                    'opacity': opacity
-                });
-            },
-            duration: 800,
-            complete: function() {
-                current_fs.hide();
-                animating = false;
-            },
-            easing: 'easeInOutBack'
-        });
-    });
 });
